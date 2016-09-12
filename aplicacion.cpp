@@ -8,6 +8,9 @@ Aplicacion::Aplicacion(QWidget *parent) :
     ui(new Ui::Aplicacion)
 {
     ui->setupUi(this);
+    lienzo = new QPixmap(ui->labelLienzo->width(),ui->labelLienzo->height());
+    lienzo->fill(Qt::white);
+    ui->labelLienzo->setPixmap(*lienzo);
     codigoFuente = "";
     rutaDelCodigoFuente = "/Users/fernandovargas/Desktop/codigoFuenteArbolSemantico.txt";
     leerElCodigoFuente();
@@ -50,4 +53,18 @@ void Aplicacion::establecerParser()
         else
             indice--;
     }
+    establecerPilaDeAtributos(indice);
+}
+
+void Aplicacion::establecerPilaDeAtributos(int indice)
+{
+    while(indice != 0){
+        if(codigoFuente[indice].isDigit()){
+            pilaParserDeAtributos.push_back("int");
+            indice--;
+        }
+        else
+            indice--;
+    }
+    pilaParserDeAtributos.push_front("int");
 }

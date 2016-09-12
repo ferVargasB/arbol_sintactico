@@ -17,6 +17,7 @@ public:
 
 private:
     Ui::Aplicacion *ui;
+    QPixmap *lienzo;
     QString rutaDelCodigoFuente;
     QString codigoFuente;
     QVector<QString> nodo;
@@ -27,6 +28,10 @@ private:
     void leerElCodigoFuente();
     //Funciones para crear la pila de parser
     void establecerParser();
+    void establecerPilaDeAtributos(int indice);
+
+    //Funciones relacionadas con dibujar los arboles
+    void limpiarLienzo();
 };
 
 #endif // APLICACION_H
