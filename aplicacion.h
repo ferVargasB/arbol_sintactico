@@ -33,6 +33,7 @@ private:
 
     //Funciones relacionadas con dibujar los arboles
     void limpiarLienzo();
+    void dibujarArbol();
 
     //Funciones relacionadas con el análisis de las reglas
     void descomponerCodigoFuenteEnTokens();

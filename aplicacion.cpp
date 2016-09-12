@@ -2,6 +2,7 @@
 #include "ui_aplicacion.h"
 #include <QFile>
 #include <QTextStream>
+#include <QPainter>
 
 Aplicacion::Aplicacion(QWidget *parent) :
     QDialog(parent),
@@ -16,6 +17,7 @@ Aplicacion::Aplicacion(QWidget *parent) :
     leerElCodigoFuente();
     establecerParser();
     descomponerCodigoFuenteEnTokens();
+    dibujarArbol();
 }
 
 Aplicacion::~Aplicacion()
@@ -68,6 +70,21 @@ void Aplicacion::establecerPilaDeAtributos(int indice)
             indice--;
     }
     pilaParserDeAtributos.push_front("int");
+}
+
+void Aplicacion::dibujarArbol()
+{
+    QPainter p(lienzo);
+    p.setPen(Qt::black);
+    p.drawEllipse(300,50,40,40);
+    p.drawEllipse(200,150,40,40);
+    p.drawEllipse(400,150,40,40);
+    p.drawText(315,75,"X");
+    p.drawText(415,175,"X");
+    p.drawText(215,175,"X");
+    p.drawLine(300,80,233,157);
+    p.drawLine(338,80,407,157);
+    ui->labelLienzo->setPixmap(*lienzo);
 }
 
 void Aplicacion::descomponerCodigoFuenteEnTokens()
