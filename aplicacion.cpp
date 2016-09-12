@@ -3,26 +3,35 @@
 #include <QFile>
 #include <QTextStream>
 #include <QPainter>
+#include <QMessageBox>
+#include <QTime>
 
 Aplicacion::Aplicacion(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::Aplicacion)
 {
     ui->setupUi(this);
+    nodo.resize(3);
+    reSuma.setPattern("^\\w\\\\+\\w");
     lienzo = new QPixmap(ui->labelLienzo->width(),ui->labelLienzo->height());
-    lienzo->fill(Qt::white);
-    ui->labelLienzo->setPixmap(*lienzo);
+    limpiarLienzo();
     codigoFuente = "";
     rutaDelCodigoFuente = "/Users/fernandovargas/Desktop/codigoFuenteArbolSemantico.txt";
     leerElCodigoFuente();
     establecerParser();
     descomponerCodigoFuenteEnTokens();
-    dibujarArbol();
 }
 
 Aplicacion::~Aplicacion()
 {
     delete ui;
+}
+
+void Aplicacion::detenerAplicacion()
+{
+    QTime dieTime = QTime::currentTime().addSecs(3);
+        while (QTime::currentTime() < dieTime)
+            QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
 }
 
 void Aplicacion::leerElCodigoFuente()
@@ -72,19 +81,27 @@ void Aplicacion::establecerPilaDeAtributos(int indice)
     pilaParserDeAtributos.push_front("int");
 }
 
+void Aplicacion::limpiarLienzo()
+{
+    lienzo->fill(Qt::white);
+    ui->labelLienzo->setPixmap(*lienzo);
+}
+
 void Aplicacion::dibujarArbol()
 {
+    limpiarLienzo();
     QPainter p(lienzo);
     p.setPen(Qt::black);
     p.drawEllipse(300,50,40,40);
     p.drawEllipse(200,150,40,40);
     p.drawEllipse(400,150,40,40);
-    p.drawText(315,75,"X");
-    p.drawText(415,175,"X");
-    p.drawText(215,175,"X");
+    p.drawText(315,75,nodo[1]);
+    p.drawText(415,175,nodo[0]);
+    p.drawText(215,175,nodo[2]);
     p.drawLine(300,80,233,157);
     p.drawLine(338,80,407,157);
     ui->labelLienzo->setPixmap(*lienzo);
+    detenerAplicacion();
 }
 
 void Aplicacion::descomponerCodigoFuenteEnTokens()
@@ -110,4 +127,46 @@ void Aplicacion::descomponerCodigoFuenteEnTokens()
     }
    token.push_front(codigoFuente[indice]);
    tablaTokens.push_back(token);
+
+   for(int i = 0; i < tablaTokens.size(); i++){
+       if (tablaTokens[i] == ""){
+           tablaTokens.remove(i);
+       }
+   }
+}
+
+void Aplicacion::crearAnalisis()
+{
+    for(int i = 0; i < tablaTokens.size(); i++){
+        if(tablaTokens[i] == ";"){
+            analizarPuntoYComa(i);
+        }
+        else if (tablaTokens[i] == "a+b"){
+            analizarOperacion(i);
+        }
+    }
+}
+
+void Aplicacion::analizarPuntoYComa(int indice)
+{
+    QRegularExpression declaracionVarible("^(int) (\\w+) (=) (\\w)");
+    nodo[0] = "null";
+    nodo[1] = tablaTokens[indice];
+    nodo[2] = "a|i";
+    QMessageBox::information(this,"","El analisis del punto y coma es correcto");
+    dibujarArbol();
+}
+
+void Aplicacion::analizarOperacion(int indice)
+{
+    nodo[0] = "operando";
+    nodo[1] = tablaTokens[indice];
+    nodo[2] = "operando";
+    QMessageBox::information(this,"","El analisis de la operacion es correcto");
+    dibujarArbol();
+}
+
+void Aplicacion::on_buttonRealizarAnalisis_clicked()
+{
+    crearAnalisis();
 }

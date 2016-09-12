@@ -2,7 +2,7 @@
 #define APLICACION_H
 
 #include <QDialog>
-
+#include <QRegularExpression>
 namespace Ui {
 class Aplicacion;
 }
@@ -15,6 +15,9 @@ public:
     explicit Aplicacion(QWidget *parent = 0);
     ~Aplicacion();
 
+private slots:
+    void on_buttonRealizarAnalisis_clicked();
+
 private:
     Ui::Aplicacion *ui;
     QPixmap *lienzo;
@@ -24,7 +27,10 @@ private:
     QVector<QString> nodo;
     QVector<QChar> pilaParser;
     QVector<QString> pilaParserDeAtributos;
+    QRegularExpression reSuma;
 
+    //Funciones del sistema
+    void detenerAplicacion();
     //Funcion para obtener el codigo fuente
     void leerElCodigoFuente();
     //Funciones para crear la pila de parser
@@ -37,6 +43,9 @@ private:
 
     //Funciones relacionadas con el análisis de las reglas
     void descomponerCodigoFuenteEnTokens();
+    void crearAnalisis();
+    void analizarPuntoYComa(int indice);
+    void analizarOperacion(int indice);
 };
 
 #endif // APLICACION_H
