@@ -15,6 +15,7 @@ Aplicacion::Aplicacion(QWidget *parent) :
     rutaDelCodigoFuente = "/Users/fernandovargas/Desktop/codigoFuenteArbolSemantico.txt";
     leerElCodigoFuente();
     establecerParser();
+    descomponerCodigoFuenteEnTokens();
 }
 
 Aplicacion::~Aplicacion()
@@ -67,4 +68,29 @@ void Aplicacion::establecerPilaDeAtributos(int indice)
             indice--;
     }
     pilaParserDeAtributos.push_front("int");
+}
+
+void Aplicacion::descomponerCodigoFuenteEnTokens()
+{
+    QString token = "";
+    int indice = codigoFuente.size() - 1;
+    while(indice != 0){
+        if(codigoFuente[indice].isSpace()){
+            tablaTokens.push_back(token);
+            token = "";
+            indice--;
+        }
+        else if(codigoFuente[indice] == ';'){
+            tablaTokens.push_back(token);
+            tablaTokens.push_back(";");
+            token = "";
+            indice--;
+        }
+        else{
+            token.push_front(codigoFuente[indice]);
+            indice--;
+        }
+    }
+   token.push_front(codigoFuente[indice]);
+   tablaTokens.push_back(token);
 }

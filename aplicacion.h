@@ -20,6 +20,7 @@ private:
     QPixmap *lienzo;
     QString rutaDelCodigoFuente;
     QString codigoFuente;
+    QVector <QString>tablaTokens;
     QVector<QString> nodo;
     QVector<QChar> pilaParser;
     QVector<QString> pilaParserDeAtributos;
@@ -32,6 +33,9 @@ private:
 
     //Funciones relacionadas con dibujar los arboles
     void limpiarLienzo();
+
+    //Funciones relacionadas con el análisis de las reglas
+    void descomponerCodigoFuenteEnTokens();
 };
 
 #endif // APLICACION_H
