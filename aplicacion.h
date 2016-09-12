@@ -20,11 +20,13 @@ private:
     QString rutaDelCodigoFuente;
     QString codigoFuente;
     QVector<QString> nodo;
-    QVector<QString> pilaParser;
+    QVector<QChar> pilaParser;
     QVector<QString> pilaParserDeAtributos;
 
-    //Funciones para obtener el codigo fuente
+    //Funcion para obtener el codigo fuente
     void leerElCodigoFuente();
+    //Funciones para crear la pila de parser
+    void establecerParser();
 };
 
 #endif // APLICACION_H

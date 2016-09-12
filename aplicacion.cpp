@@ -11,6 +11,7 @@ Aplicacion::Aplicacion(QWidget *parent) :
     codigoFuente = "";
     rutaDelCodigoFuente = "/Users/fernandovargas/Desktop/codigoFuenteArbolSemantico.txt";
     leerElCodigoFuente();
+    establecerParser();
 }
 
 Aplicacion::~Aplicacion()
@@ -27,5 +28,26 @@ void Aplicacion::leerElCodigoFuente()
     QTextStream entrada(&file); //poder leer el contenido del archivo
     while (!entrada.atEnd()) { //devuelve false hasta terminar el archivo
         codigoFuente += entrada.readLine(); //leer cada linea y concatenar
+    }
+}
+
+void Aplicacion::establecerParser()
+{
+    int indice{codigoFuente.size() - 2};
+    while(codigoFuente[indice] != ';'){
+        if(codigoFuente[indice] == 'b'){
+            pilaParser.push_front(codigoFuente[indice]);
+            indice--;
+        }
+        else if(codigoFuente[indice] == 'a'){
+            pilaParser.push_front(codigoFuente[indice]);
+            indice--;
+        }
+        else if(codigoFuente[indice] == 'c'){
+            pilaParser.push_front(codigoFuente[indice]);
+            indice--;
+        }
+        else
+            indice--;
     }
 }
