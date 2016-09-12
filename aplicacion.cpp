@@ -5,6 +5,7 @@
 #include <QPainter>
 #include <QMessageBox>
 #include <QTime>
+#include <QRegularExpression>
 
 Aplicacion::Aplicacion(QWidget *parent) :
     QDialog(parent),
@@ -29,7 +30,7 @@ Aplicacion::~Aplicacion()
 
 void Aplicacion::detenerAplicacion()
 {
-    QTime dieTime = QTime::currentTime().addSecs(3);
+    QTime dieTime = QTime::currentTime().addSecs(1);
         while (QTime::currentTime() < dieTime)
             QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
 }
@@ -144,12 +145,17 @@ void Aplicacion::crearAnalisis()
         else if (tablaTokens[i] == "a+b"){
             analizarOperacion(i);
         }
+        else if(tablaTokens[i] == "="){
+            analizarOperadorIgual(i);
+        }
+        else if(tablaTokens[i] == "c"){
+            analizarLetraC(i);
+        }
     }
 }
 
 void Aplicacion::analizarPuntoYComa(int indice)
 {
-    QRegularExpression declaracionVarible("^(int) (\\w+) (=) (\\w)");
     nodo[0] = "null";
     nodo[1] = tablaTokens[indice];
     nodo[2] = "a|i";
@@ -164,6 +170,48 @@ void Aplicacion::analizarOperacion(int indice)
     nodo[2] = "operando";
     QMessageBox::information(this,"","El analisis de la operacion es correcto");
     dibujarArbol();
+}
+
+void Aplicacion::analizarOperadorIgual(int indice)
+{
+    QRegularExpression reCualquierLetra("\\w");
+    QRegularExpression reCualquierIns("\\w\\+\\w");
+    QRegularExpression reCualquierNum("\\d");
+    QRegularExpressionMatch coincidenciaLadoIzq = reCualquierLetra.match(tablaTokens[indice+1]);
+    QRegularExpressionMatch coincidenciaLadoDere = reCualquierIns.match(tablaTokens[indice-1]);
+    QRegularExpressionMatch coincidenciaLadoDere2 = reCualquierNum.match(tablaTokens[indice-1]);
+    if(coincidenciaLadoIzq.hasMatch() && coincidenciaLadoDere.hasMatch()){
+        QMessageBox::information(this,"","Analisis correcto");
+        nodo[0] = "varibale";
+        nodo[1] = "=";
+        nodo[2] = "a";
+        dibujarArbol();
+    }
+    else if(coincidenciaLadoIzq.hasMatch() && coincidenciaLadoDere2.hasMatch()){
+        nodo[0] = "variable";
+        nodo[1] = "=";
+        nodo[2] = "a";
+        QMessageBox::information(this,"","Analisis correcto");
+        dibujarArbol();
+    }
+}
+
+void Aplicacion::analizarLetraC(int indice)
+{
+    if(tablaTokens[indice+1] == ";" && tablaTokens[indice-1] == "="){
+        nodo[0] = "variable";
+        nodo[2] = "=";
+        nodo[1] = "instruccion";
+        dibujarArbol();
+        QMessageBox::information(this,"","Analisis correcto");
+    }
+    else if(tablaTokens[indice-1] == ";" && tablaTokens[indice+1] == "int"){
+        nodo[0] = "int";
+        nodo[2] = "variable";
+        nodo[1] = "valor";
+        dibujarArbol();
+        QMessageBox::information(this,"","Analisis correcto");
+    }
 }
 
 void Aplicacion::on_buttonRealizarAnalisis_clicked()

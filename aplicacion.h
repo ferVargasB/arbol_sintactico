@@ -46,6 +46,8 @@ private:
     void crearAnalisis();
     void analizarPuntoYComa(int indice);
     void analizarOperacion(int indice);
+    void analizarOperadorIgual(int indice);
+    void analizarLetraC(int indice);
 };
 
 #endif // APLICACION_H
