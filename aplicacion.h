@@ -17,6 +17,14 @@ public:
 
 private:
     Ui::Aplicacion *ui;
+    QString rutaDelCodigoFuente;
+    QString codigoFuente;
+    QVector<QString> nodo;
+    QVector<QString> pilaParser;
+    QVector<QString> pilaParserDeAtributos;
+
+    //Funciones para obtener el codigo fuente
+    void leerElCodigoFuente();
 };
 
 #endif // APLICACION_H
