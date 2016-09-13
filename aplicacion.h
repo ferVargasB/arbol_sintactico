@@ -48,6 +48,8 @@ private:
     void analizarOperacion(int indice);
     void analizarOperadorIgual(int indice);
     void analizarLetraC(int indice);
+    void analizarLetraB(int indice);
+    void analizarLetraA(int indice);
 };
 
 #endif // APLICACION_H
