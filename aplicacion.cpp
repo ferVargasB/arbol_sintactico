@@ -17,7 +17,7 @@ Aplicacion::Aplicacion(QWidget *parent) :
     lienzo = new QPixmap(ui->labelLienzo->width(),ui->labelLienzo->height());
     limpiarLienzo();
     codigoFuente = "";
-    rutaDelCodigoFuente = "/Users/fernandovargas/Desktop/codigoFuenteArbolSemantico.txt";
+    rutaDelCodigoFuente = "C:/Users/Fredo/Desktop/codigoFuenteArbolSemantico.txt";
     leerElCodigoFuente();
     establecerParser();
     descomponerCodigoFuenteEnTokens();
